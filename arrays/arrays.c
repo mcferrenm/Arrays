@@ -24,11 +24,11 @@ Array *create_array (int capacity) {
   Array *arr= malloc(sizeof(Array));
 
   // Set initial values for capacity and count
-  arr->capcity = capaicty;
+  arr->capacity = capacity;
   arr->count = 0;
 
   // Allocate memory for elements
-  char **elements = malloc(capacity * sizeof(char *));
+  arr->elements = malloc(capacity * sizeof(char *));
 }
 
 
@@ -44,6 +44,16 @@ void destroy_array(Array *arr) {
   free(arr);
 }
 
+void mem_copy(void *dest, const void *src, int n)
+{
+    char *s = (char *)src; 
+    char *d = (char *)dest;
+    
+    for (int i = 0; i < n; i++) {
+        d[i] = s[i];
+    }
+}
+
 /*****
  * Create a new elements array with double capacity and copy elements
  * from old to new
@@ -51,13 +61,17 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
+  char *new_elements = malloc(2 * arr->capacity * sizeof(arr->elements[0]));
 
   // Copy elements into the new storage
+  mem_copy(new_elements, arr->elements, sizeof(arr->elements));
 
   // Free the old elements array (but NOT the strings they point to)
+  free(arr->elements);
 
   // Update the elements and capacity to new values
-
+  arr->elements = &new_elements;
+  arr->capacity = 2 * arr->capacity;
 }
 
 
@@ -153,13 +167,13 @@ int main(void)
 
   Array *arr = create_array(1);
 
-  arr_insert(arr, "STRING1", 0);
-  arr_append(arr, "STRING4");
-  arr_insert(arr, "STRING2", 0);
-  arr_insert(arr, "STRING3", 1);
-  arr_print(arr);
-  arr_remove(arr, "STRING3");
-  arr_print(arr);
+  // arr_insert(arr, "STRING1", 0);
+  // arr_append(arr, "STRING4");
+  // arr_insert(arr, "STRING2", 0);
+  // arr_insert(arr, "STRING3", 1);
+  // arr_print(arr);
+  // arr_remove(arr, "STRING3");
+  // arr_print(arr);
 
   destroy_array(arr);
 
