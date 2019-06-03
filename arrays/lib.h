@@ -34,4 +34,14 @@ char *string_dup(char *src)
   return dup;
 }
 
+void mem_copy(void *dest, const void *src, int n)
+{
+    char *s = (char *)src; 
+    char *d = (char *)dest;
+    
+    for (int i = 0; i < n; i++) {
+        d[i] = s[i];
+    }
+}
+
 #endif

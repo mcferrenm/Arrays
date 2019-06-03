@@ -30,6 +30,8 @@ Array *create_array (int capacity) {
 
   // Allocate memory for elements
   arr->elements = malloc(capacity * sizeof(char *));
+
+  return arr;
 }
 
 
@@ -52,7 +54,7 @@ void destroy_array(Array *arr) {
 void resize_array(Array *arr) {
 
   // Create a new element storage with double capacity
-  char *new_elements = malloc(2 * arr->capacity * sizeof(arr->elements[0]));
+  char **new_elements = malloc(2 * arr->capacity * sizeof(arr->elements[0]));
 
   // Copy elements into the new storage
   mem_copy(new_elements, arr->elements, arr->count * sizeof(arr->elements[0]));
@@ -81,8 +83,13 @@ void resize_array(Array *arr) {
 char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
+  if (index >= arr->count) {
+    perror("out of bounds");
+    exit(1);
+  }
 
   // Otherwise, return the element at the given index
+  return arr->elements[index];
 }
 
 
@@ -164,6 +171,7 @@ int main(void)
 
   // arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
+  printf("\n%s\n", arr_read(arr, 0));
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
