@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include "lib.h"
 
 typedef struct Array {
   int capacity;  // How many elements can this array hold?
@@ -42,16 +43,6 @@ void destroy_array(Array *arr) {
 
   // Free array
   free(arr);
-}
-
-void mem_copy(void *dest, const void *src, int n)
-{
-    char *s = (char *)src; 
-    char *d = (char *)dest;
-    
-    for (int i = 0; i < n; i++) {
-        d[i] = s[i];
-    }
 }
 
 /*****
@@ -121,11 +112,15 @@ void arr_append(Array *arr, char *element) {
 
   // Resize the array if the number of elements is over capacity
   // or throw an error if resize isn't implemented yet.
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
 
   // Copy the element and add it to the end of the array
+  arr->elements[arr->count] = string_dup(element);
 
   // Increment count by 1
-
+  arr->count += 1;
 }
 
 /*****
@@ -168,7 +163,7 @@ int main(void)
   Array *arr = create_array(1);
 
   // arr_insert(arr, "STRING1", 0);
-  // arr_append(arr, "STRING4");
+  arr_append(arr, "STRING4");
   // arr_insert(arr, "STRING2", 0);
   // arr_insert(arr, "STRING3", 1);
   // arr_print(arr);
