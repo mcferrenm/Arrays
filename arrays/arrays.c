@@ -55,13 +55,13 @@ void resize_array(Array *arr) {
   char *new_elements = malloc(2 * arr->capacity * sizeof(arr->elements[0]));
 
   // Copy elements into the new storage
-  mem_copy(new_elements, arr->elements, sizeof(arr->elements));
+  mem_copy(new_elements, arr->elements, arr->count * sizeof(arr->elements[0]));
 
   // Free the old elements array (but NOT the strings they point to)
   free(arr->elements);
-
+  
   // Update the elements and capacity to new values
-  arr->elements = &new_elements;
+  arr->elements = new_elements;
   arr->capacity = 2 * arr->capacity;
 }
 
