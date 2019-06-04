@@ -103,7 +103,7 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
-  if (index >= arr->count) {
+  if (index > arr->count) {
     perror("out of bounds");
     exit(1);
   }
@@ -151,14 +151,32 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
+  int index;
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
+  for (int i = 0; i < arr->count; i++) {
+    if (arr->elements[i] = element) {
+      
+      // Free string
+      for (int i = 0; i < arr->count; i++) {
+        free(arr->elements[i]);
+      }
+      // Free array
+      free(arr->elements);
+    }
+    // Save index for shift
+    index = i;
+    break;
+  }
 
   // Shift over every element after the removed element to the left one position
+  for (index; index < arr->count; index++) {
+    arr->elements[index - 1] = arr->elements[index]; 
+  }
 
   // Decrement count by 1
-
+  arr->count -= 1;
 }
 
 
