@@ -103,14 +103,26 @@ char *arr_read(Array *arr, int index) {
 void arr_insert(Array *arr, char *element, int index) {
 
   // Throw an error if the index is greater than the current count
+  if (index >= arr->count) {
+    perror("out of bounds");
+    exit(1);
+  }
 
   // Resize the array if the number of elements is over capacity
+  if (arr->count >= arr->capacity) {
+    resize_array(arr);
+  }
 
   // Move every element after the insert index to the right one position
+  for (index; index < arr->count; index++) {
+    arr->elements[index + 1] = arr->elements[index]; 
+  }
 
   // Copy the element (hint: use `strdup()`) and add it to the array
+  arr->elements[index] = string_dup(element);
 
   // Increment count by 1
+  arr->count += 1;
 
 }
 
