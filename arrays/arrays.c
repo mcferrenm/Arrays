@@ -86,8 +86,7 @@ char *arr_read(Array *arr, int index) {
 
   // Throw an error if the index is greater or equal to than the current count
   if (index >= arr->count) {
-    perror("out of bounds");
-    exit(1);
+    return NULL;
   }
 
   // Otherwise, return the element at the given index
@@ -101,7 +100,8 @@ char *arr_read(Array *arr, int index) {
  * Store the VALUE of the given string, not the REFERENCE
  *****/
 void arr_insert(Array *arr, char *element, int index) {
-
+  int count = arr->count;
+  
   // Throw an error if the index is greater than the current count
   if (index > arr->count) {
     perror("out of bounds");
@@ -114,8 +114,8 @@ void arr_insert(Array *arr, char *element, int index) {
   }
 
   // Move every element after the insert index to the right one position
-  for (index; index < arr->count; index++) {
-    arr->elements[index + 1] = arr->elements[index]; 
+  for (; index < count; count--) {
+    arr->elements[count] = arr->elements[count - 1]; 
   }
 
   // Copy the element (hint: use `strdup()`) and add it to the array
@@ -151,7 +151,6 @@ void arr_append(Array *arr, char *element) {
  * Throw an error if the value is not found.
  *****/
 void arr_remove(Array *arr, char *element) {
-  int index;
 
   // Search for the first occurence of the element and remove it.
   // Don't forget to free its memory!
@@ -160,20 +159,18 @@ void arr_remove(Array *arr, char *element) {
       
       // Free array
       free(arr->elements[i]);
-      
-      // Save index for shift and break
-      index = i;
+  
+      // Shift over every element after the removed element to the left one position
+      for (int j = i; j < arr->count - 1; j++) {
+        arr->elements[j] = arr->elements[j + 1]; 
+      }
+
+      // Decrement count by 1
+      arr->count -= 1;
       break;
-    }
+    } 
   }
-
-  // Shift over every element after the removed element to the left one position
-  for (index; index < arr->count - 1; index++) {
-    arr->elements[index] = arr->elements[index + 1]; 
-  }
-
-  // Decrement count by 1
-  arr->count -= 1;
+  return;
 }
 
 
@@ -200,7 +197,6 @@ int main(void)
 
   arr_insert(arr, "STRING1", 0);
   arr_append(arr, "STRING4");
-  printf("\n%s\n", arr_read(arr, 0));
   arr_insert(arr, "STRING2", 0);
   arr_insert(arr, "STRING3", 1);
   arr_print(arr);
